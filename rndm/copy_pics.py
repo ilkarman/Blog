@@ -8,6 +8,7 @@ from shutil import copyfile
 IMG_SRC = "C:\\Users\\ilkarman\\Pictures"
 IMG_DEST = "C:\\Users\\ilkarman\\Documents\\MyTestFolder"
 
+# os.walk() for recursive, otherwise:
 for f in os.listdir(IMG_SRC):
     # .. or f.endswith('.png')
     if f.endswith('.jpg'):

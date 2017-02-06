@@ -27,8 +27,8 @@ def upload_file():
 		img = Image.open(BytesIO(imagefile.read())).convert('RGB')
 
 		# Remove the alpha channel (want R, G, B)
-		print("Image channels: ", len(img.split()))
-		print("Image mode: ", img.mode)
+		#print("Image channels: ", len(img.split()))
+		#print("Image mode: ", img.mode)
 		#if imagefile.filename.split('.')[-1] == "png":
 		#	img.load()
 		#	img_no_alpha = Image.new("RGB", img.size, (255, 255, 255))
@@ -52,6 +52,8 @@ def upload_file():
 		# We use the base64 encoded string to display it in the HTML page
 		png_output = base64.b64encode(ret_imgio.getvalue())
 		processed_file = urllib.parse.quote(png_output)
+
+		print("Image: %s classified as %s" % (imagefile.filename, ret_dta))
 
 	else:
 

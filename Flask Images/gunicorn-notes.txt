@@ -1,0 +1,3 @@
+http://stackoverflow.com/questions/35837786/how-to-run-flask-with-gunicorn-in-multithreaded-mode
+
+gunicorn server:app -k gevent --worker-connections 1000

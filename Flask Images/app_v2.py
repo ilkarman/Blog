@@ -7,6 +7,7 @@ import urllib.parse
 import mxnet as mx
 import numpy as np
 from collections import namedtuple
+import time
 
 Batch = namedtuple('Batch', ['data'])
 
@@ -23,14 +24,16 @@ def upload_file():
 
 	if imagefile and we_like_this_file(imagefile.filename):
 
-		img = Image.open(BytesIO(imagefile.read()))
+		img = Image.open(BytesIO(imagefile.read())).convert('RGB')
 
 		# Remove the alpha channel (want R, G, B)
-		if imagefile.filename.split('.')[-1] == "png":
-			img.load()
-			img_no_alpha = Image.new("RGB", img.size, (255, 255, 255))
-			img_no_alpha.paste(img, mask=img.split()[3])
-			img = img_no_alpha
+		print("Image channels: ", len(img.split()))
+		print("Image mode: ", img.mode)
+		#if imagefile.filename.split('.')[-1] == "png":
+		#	img.load()
+		#	img_no_alpha = Image.new("RGB", img.size, (255, 255, 255))
+		#	img_no_alpha.paste(img, mask=img.split()[3])
+		#	img = img_no_alpha
 
 		# Run some processing and get back image and data
 		ret_img, ret_dta = run_some_function_using_image_as_input(img)
@@ -87,7 +90,9 @@ def run_some_function_using_image_as_input(img):
 	mod.forward(Batch([mx.nd.array(img_np)]))
 	prob = mod.get_outputs()[0].asnumpy()
 	prob = np.squeeze(prob)
-	    
+	
+	#time.sleep(10)
+
 	# Category
 	a = np.argsort(prob)[-1]    
 	classification = " ".join(synsets[a].split(" ")[1:]).split(",")[0]

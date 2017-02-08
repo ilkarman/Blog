@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, send_file
 from io import BytesIO
-from PIL import Image
+from PIL import Image, ImageOps
 import base64
 import urllib.parse
 # Additions for image classification
@@ -22,7 +22,7 @@ def upload_file():
 	# Get image from upload and stream into PIL object
 	imagefile = request.files['imagefile']
 
-	if imagefile and we_like_this_file(imagefile.filename):
+	try:
 
 		img = Image.open(BytesIO(imagefile.read())).convert('RGB')
 
@@ -55,22 +55,19 @@ def upload_file():
 
 		print("Image: %s classified as %s" % (imagefile.filename, ret_dta))
 
-	else:
+	except Exception as err:
+
+		print(err)
 
 		error_msg = "Please only upload .png, .jpg or .jpeg files"
 
 	return render_template('layout.html', **locals())
 
-def we_like_this_file(fname):
-	ok_extensions = set(['png', 'jpg', 'jpeg'])
-	if fname.split('.')[-1] in ok_extensions:
-		return True
-	return False
 
 def run_some_function_using_image_as_input(img):
 
 	# Load image
-	img = img.resize((224, 224), Image.ANTIALIAS)
+	img = ImageOps.fit(img, (224, 224), Image.ANTIALIAS)
 	
 	# Change shape
 	img_np = np.swapaxes(img, 0, 2)

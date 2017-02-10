@@ -13,7 +13,8 @@ import {
   PixelRatio,
   TouchableOpacity,
   ActivityIndicator,
-  Image
+  Image,
+  Dimensions
 } from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
@@ -23,6 +24,8 @@ export default class AwesomeProject extends Component {
     avatarSource: null,
     isLoading: false,
     message: null,
+    translated: null,
+    translatelanguage: 'es',
     helper: null
   };
 
@@ -49,12 +52,12 @@ export default class AwesomeProject extends Component {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-
         let source = { uri: response.uri };
-
+        
         this.setState({
           isLoading: true,
           message: null,
+          translated: null,
           helper: null
         });
 
@@ -70,31 +73,19 @@ export default class AwesomeProject extends Component {
         var body = new FormData()
         body.append('imagefile', photo)
 
-        var xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = (e) => {
-          if (xhr.readyState !== 4) {
-            return;
-          }
-
-          if (xhr.status === 200) {
-            console.log('success', xhr.responseText);
-            this.setState({
-              isLoading: false,
-              message: xhr.responseText,
-              helper: "Tap on the square to try again"
+        fetch('http://csabyy.uksouth.cloudapp.azure.com:5005/uploader_ios', {
+          method: 'POST',
+          body: body
+        }).then((response) => response.json())
+        .then((responseJson) => {
+          var lk = this.state.translatelanguage
+          this.setState({
+            isLoading: false,
+            message: '(en) ' + responseJson.en,
+            translated: '(' + lk + ') ' + responseJson[lk],
+            helper: "Tap on the square to try again"
             });
-          } else {
-            console.warn('error');
-            this.setState({
-              isLoading: false,
-              message: "Error. Please try again ..."
-            });
-          }
-        };
-
-        xhr.open('POST', 'http://csabyy.uksouth.cloudapp.azure.com:5005/uploader_ios');
-        xhr.send(body);
+        })
 
         this.setState({
           avatarSource: source
@@ -122,8 +113,11 @@ export default class AwesomeProject extends Component {
           </View>
         </TouchableOpacity>
         {spinner}
-        <Text style={styles.description}>
+        <Text numberOfLines={1} style={styles.description}>
           {this.state.message}
+        </Text>
+        <Text numberOfLines={1} style={styles.description}>
+          {this.state.translated}
         </Text>
       </View>
     );
@@ -131,14 +125,17 @@ export default class AwesomeProject extends Component {
 
 }
 
+var device_width = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   smalltext: {
     fontSize: 8,
     marginBottom: 10
   },
   description: {
-    fontSize: 52,
-    color: '#656565'
+    color: '#656565',
+    fontSize: 24,
+    marginBottom: 10
   },
   container: {
     flex: 1,
@@ -153,9 +150,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   avatar: {
-    borderRadius: 0,
-    width: 244,
-    height: 244
+    width: device_width,
+    height: device_width
   }
 });
 

@@ -20,13 +20,16 @@ import {
 import ImagePicker from 'react-native-image-picker';
 
 export default class AwesomeProject extends Component {
+
   state = {
     avatarSource: null,
     isLoading: false,
     message: null,
     translated: null,
     translatelanguage: 'es',
-    helper: null
+    helper: null,
+    flag_gb: 'https://github.com/stevenrskelton/flag-icon/raw/master/png/36/country-4x3/gb.png',
+    flag_es: 'https://github.com/stevenrskelton/flag-icon/raw/master/png/36/country-4x3/es.png'
   };
 
   selectPhotoTapped() {
@@ -81,8 +84,8 @@ export default class AwesomeProject extends Component {
           var lk = this.state.translatelanguage
           this.setState({
             isLoading: false,
-            message: '(en) ' + responseJson.en,
-            translated: '(' + lk + ') ' + responseJson[lk],
+            message: responseJson.en,
+            translated: responseJson[lk],
             helper: "Tap on the square to try again"
             });
         })
@@ -113,12 +116,18 @@ export default class AwesomeProject extends Component {
           </View>
         </TouchableOpacity>
         {spinner}
-        <Text numberOfLines={1} style={styles.description}>
-          {this.state.message}
-        </Text>
-        <Text numberOfLines={1} style={styles.description}>
-          {this.state.translated}
-        </Text>
+        <View style={styles.languages}>
+          <Image style={styles.flag} source={{uri: this.state.flag_gb}} />
+          <Text numberOfLines={1} style={styles.description}>
+            {this.state.message}
+          </Text>
+        </View>
+        <View style={styles.languages}>
+          <Image style={styles.flag} source={{uri: this.state.flag_es}} />
+          <Text numberOfLines={1} style={styles.description}>
+            {this.state.translated}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -128,6 +137,14 @@ export default class AwesomeProject extends Component {
 var device_width = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+  flag:{
+    width: 36,
+    height: 27
+  },
+  languages:{
+    flex:3, 
+    flexDirection: 'row'
+  },
   smalltext: {
     fontSize: 8,
     marginBottom: 10

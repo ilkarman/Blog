@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
@@ -24,11 +24,10 @@ export default class AwesomeProject extends Component {
   state = {
     avatarSource: null,
     isLoading: false,
-    message: null,
+    message: ' ',
     translated: null,
     translatelanguage: 'es',
-    helper: null,
-    flag_gb: 'https://github.com/stevenrskelton/flag-icon/raw/master/png/36/country-4x3/gb.png',
+    helper: 'Tap on the square below to start',
     flag_es: 'https://github.com/stevenrskelton/flag-icon/raw/master/png/36/country-4x3/es.png'
   };
 
@@ -59,9 +58,9 @@ export default class AwesomeProject extends Component {
         
         this.setState({
           isLoading: true,
-          message: null,
+          message: ' ',
           translated: null,
-          helper: null
+          helper: 'Running ...'
         });
 
         // You can also display the image using data:
@@ -86,7 +85,7 @@ export default class AwesomeProject extends Component {
             isLoading: false,
             message: responseJson.en,
             translated: responseJson[lk],
-            helper: "Tap on the square to try again"
+            helper: "Tap on the square to try another"
             });
         })
 
@@ -115,19 +114,31 @@ export default class AwesomeProject extends Component {
           }
           </View>
         </TouchableOpacity>
+
+        <View style={{flex:1, marginTop:10}}>
         {spinner}
+        </View>
+
         <View style={styles.languages}>
-          <Image style={styles.flag} source={{uri: this.state.flag_gb}} />
           <Text numberOfLines={1} style={styles.description}>
             {this.state.message}
           </Text>
         </View>
-        <View style={styles.languages}>
-          <Image style={styles.flag} source={{uri: this.state.flag_es}} />
-          <Text numberOfLines={1} style={styles.description}>
-            {this.state.translated}
-          </Text>
+
+        <View style={styles.results}>
+        <Text style={styles.smalltext}>
+        Tap on flag to change language
+        </Text>
+          <View style={styles.languages}>
+            <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+              <Image style={styles.flag} source={{uri: this.state.flag_es}} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} style={styles.description}>
+              {this.state.translated}
+            </Text>
+          </View>
         </View>
+
       </View>
     );
   }
@@ -139,11 +150,15 @@ var device_width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   flag:{
     width: 36,
-    height: 27
+    height: 27,
+    marginRight: 10
+  },
+  results:{
+    alignSelf: 'flex-start'
   },
   languages:{
-    flex:3, 
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 30
   },
   smalltext: {
     fontSize: 8,
@@ -151,14 +166,12 @@ const styles = StyleSheet.create({
   },
   description: {
     color: '#656565',
-    fontSize: 24,
-    marginBottom: 10
+    fontSize: 18,
   },
   container: {
-    flex: 1,
+    padding: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
   },
   avatarContainer: {
     borderColor: '#9B9B9B',

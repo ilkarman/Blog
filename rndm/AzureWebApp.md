@@ -40,7 +40,7 @@
 
 6. Go to https://github.com/yajiedesign/mxnet/releases/ and download the latest nightly build of MXNet, which for me is: "20170220_mxnet_x64_vc14_cpu.7z" and extract the contents into the FTPWebAppTemp/MXNetUpdate folder
 
-7. Create a text-file called "__init__.py" in the WebAppDemo/WebApp folder and paste in the following:
+7. Create a text-file called ```__init__.py``` in the WebAppDemo/WebApp folder and paste in the following:
 	```
 	from flask import Flask
 
@@ -251,3 +251,5 @@
 	If anything goes wrong using the Kudu console (or FTP) head to wwwroot/logs to see the python error.
 
 27. You can now modify the code to create your own web-app and bring in any extra packages your code requires
+
+Result: http://ikwebappdemo.azurewebsites.net/

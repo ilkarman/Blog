@@ -126,7 +126,7 @@ Result: http://ikwebappdemo.azurewebsites.net/
 
 	If you don't already have a git user-name configured for Azure then you will need to manually create a Web App using Azure Portal and go to the "Deployment Credentials" blade to setup your credentials
 
-11. Use an FTP client such as FileZilla to connect to your website using FTP and copy the contents of the FTPWebAppTemp folder into '/site/wwwroot'
+11. Use an FTP client such as FileZilla to connect to your website using FTP and copy the contents of the FTPWebAppTemp folder into '/site/wwwroot'. If you go to the "Properties" blade, you should see your credentials - FTP USER: "ikwebappdemo\ikflask2", FTP HOST: "ftp://waws-prod-sn1-003.ftp.azurewebsites.windows.net"
 
 12. Under the "Application settings" blade set "Always On" to "On".
 

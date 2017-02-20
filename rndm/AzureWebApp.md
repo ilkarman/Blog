@@ -1,5 +1,7 @@
 # Installing Python 3.5 (x64) and MXNet on Azure Web Apps
 
+Result: http://ikwebappdemo.azurewebsites.net/
+
 ## A - Prepare Material
 
 1. Create a folder-structure like the below:
@@ -17,7 +19,7 @@
 	--MXNetUpdate
 	```
 
-3. From "http://www.lfd.uci.edu/~gohlke/pythonlibs", download the following packages (or any others that you require) into the FTPWebAppTemp/Wheels folder:
+3. From http://www.lfd.uci.edu/~gohlke/pythonlibs, download the following packages (or any others that you require) into the FTPWebAppTemp/Wheels folder:
 	```
 	numpy-1.12.0+mkl-cp35-cp35m-win_amd64.whl
 	pandas-0.19.2-cp35-cp35m-win_amd64.whl
@@ -251,5 +253,3 @@
 	If anything goes wrong using the Kudu console (or FTP) head to wwwroot/logs to see the python error.
 
 27. You can now modify the code to create your own web-app and bring in any extra packages your code requires
-
-Result: http://ikwebappdemo.azurewebsites.net/

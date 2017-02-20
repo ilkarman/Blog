@@ -3,7 +3,6 @@
 ## A - Prepare Material
 
 1. Create a folder-structure like the below:
-
 ```
 -WebAppDemo
 --WebApp
@@ -11,7 +10,6 @@
 ```
 
 2. Create another (temporary) folder-structure like below, we will use this for software and packages that are not related to our code because we don't want to clutter our local git repo
-
 ```
 -FTPWebAppTemp
 --Wheels
@@ -20,7 +18,6 @@
 ```
 
 3. From "http://www.lfd.uci.edu/~gohlke/pythonlibs", download the following packages (or any others that you require) into the FTPWebAppTemp/Wheels folder:
-
 ```
 numpy-1.12.0+mkl-cp35-cp35m-win_amd64.whl
 pandas-0.19.2-cp35-cp35m-win_amd64.whl
@@ -30,7 +27,6 @@ scipy-0.19.0rc1-cp35-cp35m-win_amd64.whl
 ```
 
 4. Create a text-file called something like FTPWebAppTemp/requirements.txt and paste in the following:
-
 ```
 Flask==0.11.1
 Wheels\numpy-1.12.0+mkl-cp35-cp35m-win_amd64.whl
@@ -45,7 +41,6 @@ Wheels\scipy-0.19.0rc1-cp35-cp35m-win_amd64.whl
 6. Go to https://github.com/yajiedesign/mxnet/releases/ and download the latest nightly build of MXNet, which for me is: "20170220_mxnet_x64_vc14_cpu.7z" and extract the contents into the FTPWebAppTemp/MXNetUpdate folder
 
 7. Create a text-file called "__init__.py" in the WebAppDemo/WebApp folder and paste in the following:
-
 ```
 from flask import Flask
 
@@ -55,7 +50,6 @@ import WebApp.model
 ```
 
 8. Create a text-file called "model.py" in the WebAppDemo/WebApp folder and paste in the following:
-
 ```
 from flask import render_template
 import PIL
@@ -73,7 +67,6 @@ def index():
 ```
 
 9. Create a text-file called "index.html" in WebAppDemo/WebApp/Templates and paste in the following:
-
 ```
 <!DOCTYPE html> <html lang="en">
 <html>
@@ -86,9 +79,7 @@ def index():
 </body>
 </html>
 ```
-
 You should now have a folder-structure that looks like:
-
 ```
 -WebAppDemo
 --WebApp
@@ -97,7 +88,6 @@ You should now have a folder-structure that looks like:
 ---templates
 ----index.html
 ```
-
 ```
 -FTPWebAppTemp
 --requirements.txt

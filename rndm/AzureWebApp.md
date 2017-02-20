@@ -8,7 +8,6 @@
 --WebApp
 ---templates
 ```
-
 2. Create another (temporary) folder-structure like below, we will use this for software and packages that are not related to our code because we don't want to clutter our local git repo
 ```
 -FTPWebAppTemp
@@ -16,7 +15,6 @@
 --MXNET
 --MXNetUpdate
 ```
-
 3. From "http://www.lfd.uci.edu/~gohlke/pythonlibs", download the following packages (or any others that you require) into the FTPWebAppTemp/Wheels folder:
 ```
 numpy-1.12.0+mkl-cp35-cp35m-win_amd64.whl
@@ -25,7 +23,6 @@ Pillow-4.0.0-cp35-cp35m-win_amd64.whl
 scikit_learn-0.18.1-cp35-cp35m-win_amd64.whl
 scipy-0.19.0rc1-cp35-cp35m-win_amd64.whl
 ```
-
 4. Create a text-file called something like FTPWebAppTemp/requirements.txt and paste in the following:
 ```
 Flask==0.11.1
@@ -35,11 +32,8 @@ Wheels\Pillow-4.0.0-cp35-cp35m-win_amd64.whl
 Wheels\scikit_learn-0.18.1-cp35-cp35m-win_amd64.whl
 Wheels\scipy-0.19.0rc1-cp35-cp35m-win_amd64.whl
 ```
-
 5. Download the latest MXNet base build ("20160531_win10_x64_cpu.7z"): https://github.com/dmlc/mxnet/releases/download/20160531/20160531_win10_x64_cpu.7z and unzip the contents into the FTPWebAppTemp/MXNet folder
-
 6. Go to https://github.com/yajiedesign/mxnet/releases/ and download the latest nightly build of MXNet, which for me is: "20170220_mxnet_x64_vc14_cpu.7z" and extract the contents into the FTPWebAppTemp/MXNetUpdate folder
-
 7. Create a text-file called "__init__.py" in the WebAppDemo/WebApp folder and paste in the following:
 ```
 from flask import Flask
@@ -48,7 +42,6 @@ app = Flask(__name__)
 
 import WebApp.model
 ```
-
 8. Create a text-file called "model.py" in the WebAppDemo/WebApp folder and paste in the following:
 ```
 from flask import render_template
@@ -65,7 +58,6 @@ def index():
     return render_template('index.html', **locals())
 
 ```
-
 9. Create a text-file called "index.html" in WebAppDemo/WebApp/Templates and paste in the following:
 ```
 <!DOCTYPE html> <html lang="en">

@@ -112,18 +112,17 @@
 ## B - Create Azure Web-App and Configure
 
 10. Create a web-app and upload this local repo by running the following Azure CLI commands in the "WebAppDemo" folder:
+	```
+	cd WebAppDemo
+	azure login
+	azure config mode asm
+	azure site create --git ikwebappdemo
+	git add -A
+	git commit -m "init"
+	git push azure master
+	```
 
-```
-cd WebAppDemo
-azure login
-azure config mode asm
-azure site create --git ikwebappdemo
-git add -A
-git commit -m "init"
-git push azure master
-```
-
-If you don't already have a git user-name configured for Azure then you will need to manually create a Web App using Azure Portal and go to the "Deployment Credentials" blade to setup your credentials
+	If you don't already have a git user-name configured for Azure then you will need to manually create a Web App using Azure Portal and go to the "Deployment Credentials" blade to setup your credentials
 
 11. Use an FTP client such as FileZilla to connect to your website using FTP and copy the contents of the FTPWebAppTemp folder into '/site/wwwroot'
 
@@ -139,123 +138,116 @@ If you don't already have a git user-name configured for Azure then you will nee
 
 16. Check we have the latest version of Python installed:
 
-```D:\home\Python35\python.exe -V # Python 3.5.3rc1```
+	```D:\home\Python35\python.exe -V # Python 3.5.3rc1```
 
 17. Install the virtualenv module
 
-```D:\home\Python35\python.exe -m pip install virtualenv```
+	```D:\home\Python35\python.exe -m pip install virtualenv```
 
 18. Create a virtual-environment in your 'wwwroot'. We have to create this without-pip and manually install it later. *This step is important because if we try to create the virtual-environment with pip the process will not work!*
-
-```
-cd D:\home\site\wwwroot
-D:\home\Python35\python.exe -m venv --without-pip env
-```
+	```
+	cd D:\home\site\wwwroot
+	D:\home\Python35\python.exe -m venv --without-pip env
+	```
 
 19. Activate your virtual environment and install pip as described at https://pip.pypa.io/en/stable/installing/
+	```
+	env\Scripts\activate
 
-```
-env\Scripts\activate
-
-(env) python -V  # Python 3.5.3rc1
-(env) curl https://bootstrap.pypa.io/get-pip.py | python
-(env) pip --version  # pip 9.0.1
-```
+	(env) python -V  # Python 3.5.3rc1
+	(env) curl https://bootstrap.pypa.io/get-pip.py | python
+	(env) pip --version  # pip 9.0.1
+	```
 
 20. Install our dependencies:
 
-```(env) pip install -r requirements.txt```
+	```(env) pip install -r requirements.txt```
 
 21. Install MXNet:
+	```
+	set MXNET_HOME="D:\home\site\wwwroot\MXNET"
+	set PATH=%MXNET_HOME%\lib;%MXNET_HOME%\3rdparty\cudnn\bin;%MXNET_HOME%\3rdparty\cudart;%MXNET_HOME%\3rdparty\vc;%MXNET_HOME%\3rdparty\gnuwin;%MXNET_HOME%\3rdparty\openblas\bin;%MXNET_HOME%\lib;%MXNET_HOME%\3rdparty\cudnn\bin;%MXNET_HOME%\3rdparty\cudart;%MXNET_HOME%\3rdparty\vc;%MXNET_HOME%\3rdparty\gnuwin;%MXNET_HOME%\3rdparty\openblas\bin;%DEPLOYMENT_TARGET%\env\scripts;%PATH%
 
-```
-set MXNET_HOME="D:\home\site\wwwroot\MXNET"
-set PATH=%MXNET_HOME%\lib;%MXNET_HOME%\3rdparty\cudnn\bin;%MXNET_HOME%\3rdparty\cudart;%MXNET_HOME%\3rdparty\vc;%MXNET_HOME%\3rdparty\gnuwin;%MXNET_HOME%\3rdparty\openblas\bin;%MXNET_HOME%\lib;%MXNET_HOME%\3rdparty\cudnn\bin;%MXNET_HOME%\3rdparty\cudart;%MXNET_HOME%\3rdparty\vc;%MXNET_HOME%\3rdparty\gnuwin;%MXNET_HOME%\3rdparty\openblas\bin;%DEPLOYMENT_TARGET%\env\scripts;%PATH%
-
-(env) cd MXNET\python
-(env) python setup.py install
-(env) pip freeze -> mxnet 0.5.0
-```
+	(env) cd MXNET\python
+	(env) python setup.py install
+	(env) pip freeze -> mxnet 0.5.0
+	```
 
 22. Install MXNet Nightly build:
+	```
+	(env) cd MXNetUpdate\python 
+	(env) python setup.py install
+	(env) pip freeze -> mxnet 0.9.4
+	(env) deactivate
+	```
 
-```
-(env) cd ..\..
-(env) cd MXNetUpdate\python 
-(env) python setup.py install
-(env) pip freeze -> mxnet 0.9.4
-(env) deactivate
-```
-
-We can also now delete the MXNetUpdate folder
+	We can also now delete the MXNetUpdate folder
 
 ## D - Web-Server
 
 23. In the 'wwwroot' folder we need to create a configuration file that will point to our python app:
+	```
+	cd wwwroot
+	touch web.config
+	```
 
-```
-cd wwwroot
-touch web.config
-```
+	Then paste in the below (using the file-navigator above the command-prompt):
 
-Then paste in the below (using the file-navigator above the command-prompt):
-
-```
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <system.webServer>
-    <handlers>
-      <add name="PythonHandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
-    </handlers>
-    <httpPlatform processPath="D:\home\site\wwwroot\env\Scripts\python.exe"
-                  arguments="D:\home\site\wwwroot\runserver.py --port %HTTP_PLATFORM_PORT%"
-                  stdoutLogEnabled="true"
-                  stdoutLogFile="D:\home\site\wwwroot\logs\log_file2.log"
-                  startupTimeLimit="220"
-                  processesPerApplication="5">
-      <environmentVariables>
-        <environmentVariable name="SERVER_PORT" value="%HTTP_PLATFORM_PORT%" />
-      </environmentVariables>
-    </httpPlatform>
-  </system.webServer>
-</configuration>
-```
+	```
+	<?xml version="1.0" encoding="utf-8"?>
+	<configuration>
+	  <system.webServer>
+	    <handlers>
+	      <add name="PythonHandler" path="*" verb="*" modules="httpPlatformHandler" resourceType="Unspecified"/>
+	    </handlers>
+	    <httpPlatform processPath="D:\home\site\wwwroot\env\Scripts\python.exe"
+	                  arguments="D:\home\site\wwwroot\runserver.py --port %HTTP_PLATFORM_PORT%"
+	                  stdoutLogEnabled="true"
+	                  stdoutLogFile="D:\home\site\wwwroot\logs\log_file2.log"
+	                  startupTimeLimit="220"
+	                  processesPerApplication="5">
+	      <environmentVariables>
+	        <environmentVariable name="SERVER_PORT" value="%HTTP_PLATFORM_PORT%" />
+	      </environmentVariables>
+	    </httpPlatform>
+	  </system.webServer>
+	</configuration>
+	```
 
 24. We also want to collect logs so `mkdir logs` in the 'wwwroot' folder
 
 25. Finally we create the python server, and manually append the packages to the path:
+	```
+	cd wwwroot
+	touch runserver.py
+	```
 
-```
-cd wwwroot
-touch runserver.py
-```
+	And paste in the below:
 
-And paste in the below:
+	```
+	import os
 
-```
-import os
+	# Hack to get the library picked up by Python
+	os.environ["PATH"] = r"D:\home\site\wwwroot\env\lib\site-packages\numpy\core;D:\home\site\wwwroot\MXNET\lib;D:\home\site\wwwroot\MXNET\3rdparty\cudnn;D:\home\site\wwwroot\MXNET\3rdparty\cudnn\bin;D:\home\site\wwwroot\MXNET\3rdparty\cudart;D:\home\site\wwwroot\MXNET\3rdparty\vc;D:\home\site\wwwroot\MXNET\3rdparty\gnuwin;D:\home\site\wwwroot\MXNET\3rdparty\openblas\bin;D:\home\site\wwwroot\env\Scripts;" + os.environ['PATH']
 
-# Hack to get the library picked up by Python
-os.environ["PATH"] = r"D:\home\site\wwwroot\env\lib\site-packages\numpy\core;D:\home\site\wwwroot\MXNET\lib;D:\home\site\wwwroot\MXNET\3rdparty\cudnn;D:\home\site\wwwroot\MXNET\3rdparty\cudnn\bin;D:\home\site\wwwroot\MXNET\3rdparty\cudart;D:\home\site\wwwroot\MXNET\3rdparty\vc;D:\home\site\wwwroot\MXNET\3rdparty\gnuwin;D:\home\site\wwwroot\MXNET\3rdparty\openblas\bin;D:\home\site\wwwroot\env\Scripts;" + os.environ['PATH']
+	from WebApp import *
 
-from WebApp import *
+	if __name__ == '__main__':
 
-if __name__ == '__main__':
-
-    HOST = os.environ.get('SERVER_HOST', 'localhost')
-    try:
-        PORT = int(os.environ.get('SERVER_PORT', '5555'))
-    except ValueError:
-        PORT = 5555
-    app.run(HOST, PORT)
-```
+	    HOST = os.environ.get('SERVER_HOST', 'localhost')
+	    try:
+	        PORT = int(os.environ.get('SERVER_PORT', '5555'))
+	    except ValueError:
+	        PORT = 5555
+	    app.run(HOST, PORT)
+	```
 
 26. Head back to the "Overview" blade and restart your service and then click on "Browse", you should see:
 
-```
-Hello World!
-```
+	```
+	Hello World!
+	```
 
-If anything goes wrong using the Kudu console (or FTP) head to wwwroot/logs to see the python error.
+	If anything goes wrong using the Kudu console (or FTP) head to wwwroot/logs to see the python error.
 
 27. You can now modify the code to create your own web-app and bring in any extra packages your code requires

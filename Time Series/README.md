@@ -4,13 +4,13 @@ Example of forecasting 360 days worth of temperature for Central London based on
 
 ## Prophet Forecast
 
-![Prophet](prophet.JPG)
+![Prophet](full_data_prophet.JPG)
 
 ## LSTM Forecast
 
-![Prophet](lstm.JPG)
+![Prophet](full_data_lstm.JPG)
 
-## Whole Time-Series
+## Truth
 
 ![Prophet](full_data.JPG)
 

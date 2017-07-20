@@ -22,3 +22,9 @@ def mnist_for_library(channel_first=True, one_hot=False):
         y = enc.fit_transform(np.expand_dims(y, axis=-1)).toarray()
         
     return train_test_split(X.astype(np.float32), y.astype(np.int8), train_size=6/7, random_state=123)
+
+def yield_mb(X, y, batchsize=64):
+    assert len(X) == len(y)
+    # Only complete batches are submitted
+    for i in range(len(X)//batchsize):
+        yield X[i*batchsize:(i+1)*batchsize], y[i*batchsize:(i+1)*batchsize]
